@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import threading
 import time
 import uuid
@@ -36,16 +36,6 @@ def health_monitor():
 def index():
     return render_template('index.html')
 
-
-# First-Fit scheduling algorithm (needed for recovery)
-def schedule_pod(pod_id, cpu_required):
-    for node_id, node in nodes.items():
-        if node["available_cores"] >= cpu_required:
-            node["available_cores"] -= cpu_required
-            node["pods"].append(pod_id)
-            pods[pod_id]["node_id"] = node_id
-            return True
-    return False
 
 @app.route('/list_nodes', methods=['GET'])
 def list_nodes():

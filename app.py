@@ -42,6 +42,22 @@ def schedule_pod(pod_id, cpu_required):
             return True
     return False
 
+@app.route('/list_nodes', methods=['GET'])
+def list_nodes():
+    current_time = datetime.now().timestamp()
+    node_status = []
+    for node_id, node in nodes.items():
+        status = "Healthy" if (current_time - node["last_heartbeat"] <= 10) else "Failed"
+        node_status.append({
+            "node_id": node_id,
+            "cpu_cores": node["cpu_cores"],
+            "available_cores": node["available_cores"],
+            "pods": node["pods"],
+            "status": status,
+            "container_id": node["container_id"]
+        })
+    return jsonify(node_status)
+
 # Routes
 @app.route('/heartbeat', methods=['POST'])
 def heartbeat():

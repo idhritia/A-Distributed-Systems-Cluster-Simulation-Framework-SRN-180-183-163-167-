@@ -32,6 +32,11 @@ def health_monitor():
                     schedule_pod(pod_id, pods[pod_id]["cpu_required"])
         time.sleep(2)
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
 # First-Fit scheduling algorithm (needed for recovery)
 def schedule_pod(pod_id, cpu_required):
     for node_id, node in nodes.items():
